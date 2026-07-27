@@ -1,0 +1,95 @@
+<div class="tasks-page">
+  <section class="tasks-card">
+    <header class="tasks-header">
+      <div>
+        <span class="eyebrow">ORGANISATION</span>
+        <h1>Mes tâches</h1>
+        <p class="subtitle">
+          Il reste
+          <strong>{{ remaining() }}</strong>
+          tâche(s) à faire.
+        </p>
+      </div>
+
+      <a routerLink="/tasks/new" class="btn-add">
+        <span aria-hidden="true">＋</span>
+        Nouvelle tâche
+      </a>
+    </header>
+
+    <nav class="filters" aria-label="Filtrer les tâches">
+      <button
+        type="button"
+        (click)="setFilter('all')"
+        [class.active]="filter() === 'all'"
+      >
+        Toutes
+      </button>
+
+      <button
+        type="button"
+        (click)="setFilter('active')"
+        [class.active]="filter() === 'active'"
+      >
+        À faire
+      </button>
+
+      <button
+        type="button"
+        (click)="setFilter('done')"
+        [class.active]="filter() === 'done'"
+      >
+        Terminées
+      </button>
+    </nav>
+
+    @if (visibleTasks().length === 0) {
+      <div class="empty">
+        <span class="empty-icon" aria-hidden="true">✓</span>
+        <h2>Aucune tâche ici</h2>
+        <p>Tout est à jour pour le moment.</p>
+      </div>
+    } @else {
+      <ul class="task-list">
+        @for (task of visibleTasks(); track task.id) {
+          <li class="task-item" [class.done]="task.done">
+            <span class="priority" title="Priorité">
+              {{ task.priority | priorityIcon }}
+            </span>
+
+            <div class="task-content">
+              <span class="title">{{ task.title }}</span>
+
+              <small class="date">
+                Créée le {{ task.createdAt | date:'dd/MM/yyyy à HH:mm' }}
+              </small>
+            </div>
+
+            <div class="task-actions">
+              <button
+                type="button"
+                class="btn-toggle"
+                (click)="toggle(task.id)"
+              >
+                <span aria-hidden="true">
+                  {{ task.done ? '↩' : '✓' }}
+                </span>
+                {{ task.done ? 'Rouvrir' : 'Terminer' }}
+              </button>
+
+              <button
+                type="button"
+                class="btn-delete"
+                (click)="remove(task.id)"
+                aria-label="Supprimer la tâche"
+                title="Supprimer"
+              >
+                🗑
+              </button>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+</div>

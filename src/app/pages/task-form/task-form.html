@@ -1,0 +1,148 @@
+<div class="form-page">
+  <section class="form-card">
+    <header class="form-header">
+      <a
+        routerLink="/tasks"
+        class="back-link"
+        aria-label="Retour à la liste des tâches"
+      >
+        ←
+      </a>
+
+      <div>
+        <span class="eyebrow">NOUVELLE TÂCHE</span>
+        <h1>Créer une tâche</h1>
+        <p>Ajoutez une tâche et définissez son niveau de priorité.</p>
+      </div>
+    </header>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="form-field">
+        <label for="title">
+          Titre de la tâche
+          <span class="required">*</span>
+        </label>
+
+        <div
+          class="input-wrapper"
+          [class.invalid]="
+            form.controls.title.touched &&
+            form.controls.title.invalid
+          "
+        >
+          <span class="input-icon" aria-hidden="true">✎</span>
+
+          <input
+            id="title"
+            type="text"
+            formControlName="title"
+            placeholder="Ex. Préparer la présentation"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="field-footer">
+          @if (
+            form.controls.title.touched &&
+            form.controls.title.hasError('required')
+          ) {
+            <small class="error-message">
+              <span aria-hidden="true">⚠</span>
+              Le titre est obligatoire.
+            </small>
+          } @else if (
+            form.controls.title.touched &&
+            form.controls.title.hasError('minlength')
+          ) {
+            <small class="error-message">
+              <span aria-hidden="true">⚠</span>
+              Le titre doit contenir au moins 3 caractères.
+            </small>
+          } @else {
+            <small class="hint">
+              Utilisez un titre court et facile à comprendre.
+            </small>
+          }
+        </div>
+      </div>
+
+      <fieldset class="form-field">
+        <legend>
+          Niveau de priorité
+          <span class="required">*</span>
+        </legend>
+
+        <div class="priority-options">
+          <label
+            class="priority-card low"
+            [class.selected]="form.controls.priority.value === 'low'"
+          >
+            <input
+              type="radio"
+              formControlName="priority"
+              value="low"
+            />
+
+            <span class="priority-icon" aria-hidden="true">●</span>
+
+            <span class="priority-text">
+              <strong>Basse</strong>
+              <small>Peut attendre</small>
+            </span>
+          </label>
+
+          <label
+            class="priority-card medium"
+            [class.selected]="form.controls.priority.value === 'medium'"
+          >
+            <input
+              type="radio"
+              formControlName="priority"
+              value="medium"
+            />
+
+            <span class="priority-icon" aria-hidden="true">●</span>
+
+            <span class="priority-text">
+              <strong>Moyenne</strong>
+              <small>À faire prochainement</small>
+            </span>
+          </label>
+
+          <label
+            class="priority-card high"
+            [class.selected]="form.controls.priority.value === 'high'"
+          >
+            <input
+              type="radio"
+              formControlName="priority"
+              value="high"
+            />
+
+            <span class="priority-icon" aria-hidden="true">●</span>
+
+            <span class="priority-text">
+              <strong>Haute</strong>
+              <small>À traiter rapidement</small>
+            </span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="form-actions">
+        <a routerLink="/tasks" class="btn-cancel">
+          Annuler
+        </a>
+
+        <button
+          type="submit"
+          class="btn-submit"
+          [disabled]="form.invalid"
+        >
+          <span aria-hidden="true">＋</span>
+          Ajouter la tâche
+        </button>
+      </div>
+    </form>
+  </section>
+</div>
